@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { canTreatArrayAsAnd } = require('sequelize/types/utils');
 const { Product, Category, Tag, ProductTag } = require('../../models');
 
 // The `/api/products` endpoint
@@ -108,7 +109,9 @@ router.put('/:id', (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     const productDel = await Product.destroy({
-      where: req.params.id
+      where: {
+        id: req.params.id
+      }
     })
   
     if (!productDel) {

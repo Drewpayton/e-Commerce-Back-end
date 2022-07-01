@@ -39,6 +39,10 @@ router.post('/', async (req, res) => {
       tag_name: req.body.tag_name
     })
 
+    if (tagPost.tag_name === undefined) {
+      res.status(403).json({ message: "There is no name for this tag"});
+    }
+
     res.status(200).json(tagPost)
   } catch (err) {
     res.status(403).json(err);
@@ -69,8 +73,10 @@ router.delete('/:id', async (req, res) => {
   // delete on tag by its `id` value
   try {
     const tagDel = await Tag.destroy({
-      where: req.params.id
-    })
+      where: {
+        id: req.params.id
+      }
+})
 
     if (!tagDel) {
       res.status(403).json({ message: "Id does not exsist"})
